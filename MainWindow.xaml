@@ -1,0 +1,365 @@
+﻿<Window x:Class="Task_in_numerical_methods.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Task_in_numerical_methods"
+        mc:Ignorable="d"
+        xmlns:oxy="http://oxyplot.org/wpf"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <TabControl x:Name="tabControl" SelectionChanged="tabControl_SelectionChanged">
+            <TabItem Header="Оценка погрешности">
+                <Grid Background="#FFE5E5E5">
+                    <Grid.RowDefinitions >
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    
+                    <TextBlock Grid.Row="0" TextWrapping="Wrap" Width="500" Height="65" VerticalAlignment="Top" FontSize="16">
+                        Вычислить значение функции и и ее предельные
+                        абсолютную и относительную погрешности, если известны погрешности ее аргументов.
+                     </TextBlock>
+
+                    <WrapPanel Orientation="Vertical" Grid.Row="1" MaxWidth="600" Margin="10">
+
+                        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" VerticalAlignment="Top">
+                            <Label x:Name="label6" Content="Выражение: m*у^x + +k^-y"/>
+                        </StackPanel>
+
+                        <StackPanel HorizontalAlignment="Left" Orientation="Horizontal" VerticalAlignment="Top">
+                            <Label x:Name="label" Content="Введите x:"/>
+                            <TextBox x:Name="xValue" TextWrapping="Wrap" Text="" Width="60"/>
+                        </StackPanel>
+
+                        <StackPanel HorizontalAlignment="Left" Orientation="Horizontal" VerticalAlignment="Top">
+                            <Label x:Name="label4" Content="Введите погрешность x:"/>
+                            <TextBox x:Name="xFault" TextWrapping="Wrap" Text="" Width="60"/>
+                        </StackPanel>
+
+                        <StackPanel HorizontalAlignment="Left" Orientation="Horizontal" VerticalAlignment="Top">
+                            <Label x:Name="label1" Content="Введите y:"/>
+                            <TextBox x:Name="yValue" TextWrapping="Wrap" Text="" Width="60"/>
+                        </StackPanel>
+                        <StackPanel HorizontalAlignment="Left" Orientation="Horizontal" VerticalAlignment="Top">
+                            <Label x:Name="label5" Content="Введите погрешность y%:"/>
+                            <TextBox x:Name="yFault" TextWrapping="Wrap" Text="" Width="60"/>
+                        </StackPanel>
+
+                        <StackPanel HorizontalAlignment="Left" Orientation="Horizontal" VerticalAlignment="Top">
+                            <Label x:Name="label2" Content="Введите m:"/>
+                            <TextBox x:Name="mValue" TextWrapping="Wrap" Text="" Width="60"/>
+                        </StackPanel>
+                        <StackPanel HorizontalAlignment="Left" Orientation="Horizontal" VerticalAlignment="Top">
+                            <Label x:Name="label3" Content="Введите k:"/>
+                            <TextBox x:Name="kValue" TextWrapping="Wrap" Text="" Width="60"/>
+                        </StackPanel>
+
+                        <TextBlock x:Name="response" HorizontalAlignment="Left" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Height="211" Width="232"/>
+                        <Button x:Name="button" Content="Рассчитать" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Bottom" Click="button_Click"/>
+                    </WrapPanel>
+                </Grid>
+            </TabItem>
+            
+            <TabItem Header="Нелинейное уравнение">
+                <Grid Background="#FFE5E5E5">
+                    <Label x:Name="label7" Content="Уравнение: x^n +mx - c =0" HorizontalAlignment="Left" Margin="242,10,0,0" VerticalAlignment="Top"/>
+
+                    <StackPanel HorizontalAlignment="Left" Orientation="Horizontal" VerticalAlignment="Top" Margin="35,60,0,0">
+                        <Label x:Name="label8" Content="Погрешность: "/>
+                        <TextBox x:Name="faultVal" Height="25" TextWrapping="Wrap" Text="" Width="50"/>
+                    </StackPanel>
+                    <StackPanel HorizontalAlignment="Left" Orientation="Horizontal" VerticalAlignment="Top" Margin="197,60,0,0">
+                        <Label x:Name="label9" Content="Степень: "/>
+                        <TextBox x:Name="sqrtVal" Height="25" TextWrapping="Wrap" Text="" Width="50"/>
+                    </StackPanel>
+                    <StackPanel HorizontalAlignment="Left" Orientation="Horizontal" VerticalAlignment="Top" Margin="35,91,0,0">
+                        <Label x:Name="label10" Content="m: "/>
+                        <TextBox x:Name="mVal" Height="25" TextWrapping="Wrap" Text="" Width="50"/>
+                    </StackPanel>
+                    <StackPanel HorizontalAlignment="Left" Orientation="Horizontal" VerticalAlignment="Top" Margin="137,91,0,0">
+                        <Label x:Name="label11" Content="c: "/>
+                        <TextBox x:Name="cVal" Height="25" TextWrapping="Wrap" Text="" Width="50"/>
+                    </StackPanel>
+
+                    <oxy:PlotView x:Name="PlotView" Grid.Row="0" Grid.Column="0"  Model="{Binding GraphModel}" Margin="362,60,45,49"/>
+
+                    <Button x:Name="button1" Content="Рассчитать" HorizontalAlignment="Left" Margin="73,323,0,0" VerticalAlignment="Top" Click="button1_Click"/>
+                    <TextBlock x:Name="sqrtLiniar" HorizontalAlignment="Left" Margin="35,134,0,0" TextWrapping="Wrap" VerticalAlignment="Top">
+                           x примерно равно:
+                    </TextBlock>
+                </Grid>
+            </TabItem>
+            
+            <TabItem Header="СЛАУ" x:Name="SLAU">
+                <Grid Background="#FFE5E5E5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="300*"/>
+                        <ColumnDefinition Width="300*"/>
+                        <ColumnDefinition Width="300*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0" x:Name="slau" HorizontalAlignment="Center">
+                        <TextBlock x:Name="text1" TextWrapping="Wrap" TextAlignment="Center"><Run Text="Решение системы уравнений"/></TextBlock>
+                        <StackPanel x:Name="slauInput" HorizontalAlignment="Center" Height="200"></StackPanel>
+                        <Button x:Name="button2" Content="Решить" Click="button2_Click"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="1" x:Name="slauFault" HorizontalAlignment="Center">
+                        <TextBlock x:Name="text2" TextWrapping="Wrap" TextAlignment="Center"><Run Text="Решение СЛАУ с точностью"/></TextBlock>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock x:Name="znach" TextAlignment="Center"><Run Text="Точность:"/></TextBlock>
+                            <TextBox x:Name="slauFF" Width="50"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock x:Name="verText" TextAlignment="Center"><Run Text="m:"/></TextBlock>
+                            <TextBox x:Name="ver" Width="50"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Vertical">
+                            <TextBlock>Начальные значения</TextBlock>
+                            <Grid x:Name="preVal">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+
+                                <Label Grid.Column="0">x1</Label>
+                                <Label Grid.Column="1">x2</Label>
+                                <Label Grid.Column="2">x3</Label>
+                                <Label Grid.Column="3">x4</Label>
+                                <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal">
+                                    <TextBox x:Name="slauFX1" Width="30"/>
+                                    <Label>m</Label>
+                                </StackPanel>
+                                <TextBox x:Name="slauFX2" Grid.Row="1" Grid.Column="1"/>
+                                <TextBox x:Name="slauFX3" Grid.Row="1" Grid.Column="2"/>
+                                <TextBox x:Name="slauFX4" Grid.Row="1" Grid.Column="3"/>
+                            </Grid>
+                        </StackPanel>
+
+                        <StackPanel x:Name="slauFaultInput" HorizontalAlignment="Center" Height="200"></StackPanel>
+                        <Button x:Name="slauFaultRes" Content="Решить" Click="slauFaultRes_Click"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="2" x:Name="slauRun" HorizontalAlignment="Center">
+                        <TextBlock x:Name="text3" TextWrapping="Wrap" TextAlignment="Center"><Run Text="Решение СЛАУ прогонкой"/></TextBlock>
+                        <StackPanel x:Name="slauRunInput" HorizontalAlignment="Center" Height="200"></StackPanel>
+                        <Button x:Name="slauRunRes" Content="Решить" Click="slauRunRes_Click"/>
+                    </StackPanel>
+
+                </Grid>
+            </TabItem>
+            <TabItem Header="Численное решение СНУ">
+                <Grid Background="#FFE5E5E5">
+                    <TextBlock HorizontalAlignment="Center">Решение системы нелинейных уравнений методом Ньютона</TextBlock>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="50,40,0,0">
+                        <Label>Точность:</Label>
+                        <TextBox x:Name="SnuFault" Width="30" Height="20"/>
+                    </StackPanel>
+                    <StackPanel Width="300" Height="30" Orientation="Horizontal" VerticalAlignment="Top" Margin="30">
+                        <Label>sin(x -</Label>
+                        <TextBox x:Name="SnuM" Height="20" Width="20"/>
+                        <Label>) =</Label>
+                        <TextBox x:Name="SnuN" Height="20" Width="20"/>
+                        <Label>+ y</Label>
+                    </StackPanel>
+                    <StackPanel Width="300" Orientation="Horizontal" VerticalAlignment="Top" Margin="30, 60, 0,0">
+                        <Label>x + sin(y +</Label>
+                        <TextBox x:Name="SnuM1" Height="20" Width="20"/>
+                        <Label>) =</Label>
+                        <TextBox x:Name="SnuN1" Height="20" Width="20"/>
+                    </StackPanel>
+                    <Button HorizontalAlignment="Left" VerticalAlignment="Bottom" x:Name="SnuRes" Width="100" Height="30" Margin="20" Click="SnuRes_Click">Решить</Button>
+                    <TextBlock x:Name="SnuResText" HorizontalAlignment="Left" Margin="32,110,0,0" VerticalAlignment="Top"/>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Интерполяция">
+                <Grid Background="#FFE5E5E5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="300*"/>
+                        <ColumnDefinition Width="300*"/>
+                        <ColumnDefinition Width="300*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel x:Name="Inter" Grid.Column="0" HorizontalAlignment="Center">
+                        <TextBlock TextWrapping="Wrap">Построение интерполяционного полинома Ньютона</TextBlock>
+                        <StackPanel Height="100" Width="70" x:Name="InterInput"/>
+                        <TextBlock x:Name="interResT" Height="80"/>
+                        <oxy:PlotView x:Name="InterGraph" Height="100" Width="200"  Model="{Binding InterGr}"/>
+                        <Button x:Name="InterRes" Click="InterRes_Click" Content="Решить"/>
+                    </StackPanel>
+                    <StackPanel x:Name="InterSq" Grid.Column="1" HorizontalAlignment="Center">
+                        <TextBlock TextWrapping="Wrap">Интерполяция кубическими сплайнами при x=1,1</TextBlock>
+                        <StackPanel Height="150" Width="70" x:Name="InterSqInput"/>
+                        <TextBlock x:Name="InterSqResT" Height="50"/>
+                        <oxy:PlotView x:Name="InterSqGraph" Height="100" Width="200"  Model="{Binding InterSqGr}"/>
+                        <Button x:Name="InterSqRes" Click="InterSqRes_Click">Решить</Button>
+                    </StackPanel>
+                    <StackPanel x:Name="LessSq" Grid.Column="2" HorizontalAlignment="Center">
+                        <TextBlock TextWrapping="Wrap">Метод наименьших квадратов</TextBlock>
+                        <StackPanel Height="130" Width="70" x:Name="LessSqInput"/>
+                        <TextBlock x:Name="LessSqResT" Height="100"/>
+                        <oxy:PlotView x:Name="LessSqGraph" Height="100" Width="200"  Model="{Binding LessSqGr}"/>
+                        <Button x:Name="LessSqRes" Click="LessSqRes_Click">Решить</Button>
+                    </StackPanel>
+
+                </Grid>
+            </TabItem>
+            <TabItem Header="Численное интегрирование">
+                <Grid Background="#FFE5E5E5">
+                    <StackPanel x:Name="NumInteg">
+                        <TextBlock TextAlignment="Center" Width="600" TextWrapping="Wrap">Вычислить интеграл, используя квадратурные формулы прямо
+угольников, трапеций и парабол (Симпсона), при заданном числе интерва
+лов n:</TextBlock>
+                        <StackPanel Orientation="Vertical">
+                            <TextBlock>
+                                ∫(m*x^c - m1 + √x)dx
+                            </TextBlock>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock>n =</TextBlock>
+                            <TextBox x:Name="NumInterN" Width="30"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock>a =</TextBlock>
+                            <TextBox x:Name="NumInterA" Width="30"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock>b =</TextBlock>
+                            <TextBox x:Name="NumInterB" Width="30"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock>c =</TextBlock>
+                            <TextBox x:Name="NumInterC" Width="30"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock>m =</TextBlock>
+                            <TextBox x:Name="NumInterM" Width="30"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock>m1 =</TextBlock>
+                            <TextBox x:Name="NumInterM1" Width="30"/>
+                        </StackPanel>
+                        <TextBlock x:Name="NumInterResT"/>
+                        <Button x:Name="NumInterButton" Width="100" Click="NumInterButton_Click">Решить</Button>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Конечные разности">
+                <Grid Background="#FFE5E5E5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition MinWidth="300"/>
+                        <ColumnDefinition MinWidth="300"/>
+                    </Grid.ColumnDefinitions>
+                    
+                    <StackPanel Grid.Column="0" Orientation="Vertical" HorizontalAlignment="Center" x:Name="FDifferent">
+                        <StackPanel Orientation="Horizontal">
+                            <StackPanel Orientation="Vertical">
+                                <StackPanel Orientation="Horizontal" Margin="5">
+                                    <TextBlock>y`=</TextBlock>
+                                    <TextBox x:Name="FDifferentM" Width="20"/>
+                                    <TextBlock>x+</TextBlock>
+                                    <TextBox x:Name="FDifferentC" Width="20"/>
+                                    <TextBlock>y</TextBlock>
+                                </StackPanel>
+
+                                <StackPanel Orientation="Horizontal" Margin="5">
+                                    <TextBlock Width="20">x э</TextBlock>
+                                    <TextBox x:Name="FDifferentXS" Width="20"/>
+                                    <TextBlock Width="5"/>
+                                    <TextBox x:Name="FDifferentXE" Width="20"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="5">
+                                    <TextBlock Width="15">y=</TextBlock>
+                                    <TextBox x:Name="FDifferentYS" Width="20"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="5">
+                                    <TextBlock Width="15">h=</TextBlock>
+                                    <TextBox x:Name="FDifferentH" Width="20"/>
+                                </StackPanel>
+                            </StackPanel>
+
+                            <StackPanel Orientation="Vertical">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock MinWidth="80" Padding="5" x:Name="EulerResT"/>
+                                    <oxy:PlotView x:Name="EulerGraph" Height="100" Width="150"  Model="{Binding EulerGr}"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock MinWidth="80" Padding="5" x:Name="MEulerResT"/>
+                                    <oxy:PlotView x:Name="MEulerGraph" Height="100" Width="150"  Model="{Binding MEulerGr}"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock MinWidth="80" Padding="5" x:Name="RKutResT"/>
+                                    <oxy:PlotView x:Name="RKutGraph" Height="100" Width="150"  Model="{Binding RKutGr}"/>
+                                </StackPanel>
+
+                            </StackPanel>
+                        </StackPanel>
+
+                        <Button x:Name="FDifferentBRes" Width="100" Click="FDifferentBRes_Click">Решить</Button>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="1" HorizontalAlignment="Center" x:Name="SecondTime">
+                        <TextBlock TextWrapping="Wrap">Решение краевой задачи для линейного дифференциального 
+уравнения второго порядка методом конечных разностей</TextBlock>
+
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock>y'' - y'/</TextBlock>
+                            <TextBox x:Name="SecondTimeM" Width="20"/>
+                            <TextBlock>+ xy =</TextBlock>
+                            <TextBox x:Name="SecondTimeC" Width="20"/>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock>y'(</TextBlock>
+                            <TextBox x:Name="SecondTimeX" Width="20"/>
+                            <TextBlock>) = </TextBlock>
+                            <TextBox x:Name="SecondTimeY" Width="20"/>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock>y'(</TextBlock>
+                            <TextBox x:Name="SecondTimeX1" Width="20"/>
+                            <TextBlock>) =</TextBlock>
+                            <TextBox x:Name="SecondTimeY1" Width="20"/>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock>h =</TextBlock>
+                            <TextBox x:Name="SecondTimeH" Width="20"/>
+                        </StackPanel>
+                        <TextBlock x:Name="SecondTimeResT"/>
+
+                        <Button x:Name="SecondTimeResB" Width="100" Click="SecondTimeResB_Click">Решить</Button>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Линейное программирование">
+                <Grid Background="#FFE5E5E5">
+                    <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
+                        <TextBlock>f = x<Run BaselineAlignment="Subscript" FontSize="10">1</Run> 
+                        +2x<Run BaselineAlignment="Subscript" FontSize="10">2</Run> ->max</TextBlock>
+
+                        <StackPanel Margin="10" Orientation="Horizontal" HorizontalAlignment="Center">
+                            <StackPanel x:Name="LinearProgA" Width="70"/>
+                            <StackPanel x:Name="LinearProgO" Width="20"/>
+                            <StackPanel x:Name="LinearProgB" Width="40"/>
+                        </StackPanel>
+                        <TextBlock>x1,x2 >=0</TextBlock>
+                        <TextBlock x:Name="LinearProgResT" Height="100"/>
+                        <Button x:Name="LinearProgResB" Click="LinearProgResB_Click">Решить</Button>
+                    </StackPanel>
+
+                </Grid>
+            </TabItem>
+
+        </TabControl>
+    </Grid>
+</Window>
