@@ -13,7 +13,12 @@ namespace OutputData
         public void outputMatrixX(StackPanel name, Dictionary<string, double> res)
         {
             Label r = new Label();
+
+            if(name.Children[name.Children.Count - 1] is Label)
+             name.Children.RemoveAt(name.Children.Count-1);
+
             r.Margin = new Thickness(0, 100, 0, 0);
+           
             foreach (var item in res)
             {
                 r.Content += $"{item.Key}: {item.Value}\n";

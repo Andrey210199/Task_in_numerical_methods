@@ -11,83 +11,95 @@
         <TabControl x:Name="tabControl" SelectionChanged="tabControl_SelectionChanged">
             <TabItem Header="Оценка погрешности">
                 <Grid Background="#FFE5E5E5">
-                    <Grid.RowDefinitions >
-                        <RowDefinition Height="auto"/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
-                    
-                    <TextBlock Grid.Row="0" TextWrapping="Wrap" Width="500" Height="65" VerticalAlignment="Top" FontSize="16">
+                    <StackPanel HorizontalAlignment="Center" Orientation="Vertical">
+
+                      <TextBlock TextWrapping="Wrap" MaxWidth="500" Height="65" FontSize="16">
                         Вычислить значение функции и и ее предельные
                         абсолютную и относительную погрешности, если известны погрешности ее аргументов.
                      </TextBlock>
 
-                    <WrapPanel Orientation="Vertical" Grid.Row="1" MaxWidth="600" Margin="10">
+                    <WrapPanel Orientation="Vertical" MaxWidth="600" Margin="10">
 
-                        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" VerticalAlignment="Top">
+                        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
                             <Label x:Name="label6" Content="Выражение: m*у^x + +k^-y"/>
                         </StackPanel>
 
-                        <StackPanel HorizontalAlignment="Left" Orientation="Horizontal" VerticalAlignment="Top">
+                        <WrapPanel HorizontalAlignment="Left" Orientation="Horizontal">
                             <Label x:Name="label" Content="Введите x:"/>
                             <TextBox x:Name="xValue" TextWrapping="Wrap" Text="" Width="60"/>
-                        </StackPanel>
+                        </WrapPanel>
 
-                        <StackPanel HorizontalAlignment="Left" Orientation="Horizontal" VerticalAlignment="Top">
+                        <WrapPanel HorizontalAlignment="Left" Orientation="Horizontal">
                             <Label x:Name="label4" Content="Введите погрешность x:"/>
                             <TextBox x:Name="xFault" TextWrapping="Wrap" Text="" Width="60"/>
-                        </StackPanel>
+                        </WrapPanel>
 
-                        <StackPanel HorizontalAlignment="Left" Orientation="Horizontal" VerticalAlignment="Top">
+                        <WrapPanel HorizontalAlignment="Left" Orientation="Horizontal">
                             <Label x:Name="label1" Content="Введите y:"/>
                             <TextBox x:Name="yValue" TextWrapping="Wrap" Text="" Width="60"/>
-                        </StackPanel>
-                        <StackPanel HorizontalAlignment="Left" Orientation="Horizontal" VerticalAlignment="Top">
+                        </WrapPanel>
+                        <WrapPanel HorizontalAlignment="Left" Orientation="Horizontal">
                             <Label x:Name="label5" Content="Введите погрешность y%:"/>
                             <TextBox x:Name="yFault" TextWrapping="Wrap" Text="" Width="60"/>
-                        </StackPanel>
+                        </WrapPanel>
 
-                        <StackPanel HorizontalAlignment="Left" Orientation="Horizontal" VerticalAlignment="Top">
+                        <WrapPanel HorizontalAlignment="Left" Orientation="Horizontal">
                             <Label x:Name="label2" Content="Введите m:"/>
                             <TextBox x:Name="mValue" TextWrapping="Wrap" Text="" Width="60"/>
-                        </StackPanel>
-                        <StackPanel HorizontalAlignment="Left" Orientation="Horizontal" VerticalAlignment="Top">
+                        </WrapPanel>
+                        
+                        <WrapPanel HorizontalAlignment="Left" Orientation="Horizontal">
                             <Label x:Name="label3" Content="Введите k:"/>
                             <TextBox x:Name="kValue" TextWrapping="Wrap" Text="" Width="60"/>
-                        </StackPanel>
+                        </WrapPanel>
 
-                        <TextBlock x:Name="response" HorizontalAlignment="Left" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Height="211" Width="232"/>
-                        <Button x:Name="button" Content="Рассчитать" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Bottom" Click="button_Click"/>
+                        <TextBlock x:Name="response" HorizontalAlignment="Left" TextWrapping="Wrap" Text="TextBlock" Height="211" MaxWidth="232"/>
+                        
                     </WrapPanel>
+                        
+                    <Button x:Name="button" Content="Рассчитать" HorizontalAlignment="Center" Click="button_Click"/>
+
+                    </StackPanel>
                 </Grid>
             </TabItem>
             
             <TabItem Header="Нелинейное уравнение">
                 <Grid Background="#FFE5E5E5">
-                    <Label x:Name="label7" Content="Уравнение: x^n +mx - c =0" HorizontalAlignment="Left" Margin="242,10,0,0" VerticalAlignment="Top"/>
+                    <StackPanel Orientation="Vertical">
+                        
+                    <TextBlock x:Name="label7" Text="Уравнение: x^n +mx - c =0" HorizontalAlignment="Center"/>
 
-                    <StackPanel HorizontalAlignment="Left" Orientation="Horizontal" VerticalAlignment="Top" Margin="35,60,0,0">
-                        <Label x:Name="label8" Content="Погрешность: "/>
-                        <TextBox x:Name="faultVal" Height="25" TextWrapping="Wrap" Text="" Width="50"/>
-                    </StackPanel>
-                    <StackPanel HorizontalAlignment="Left" Orientation="Horizontal" VerticalAlignment="Top" Margin="197,60,0,0">
-                        <Label x:Name="label9" Content="Степень: "/>
-                        <TextBox x:Name="sqrtVal" Height="25" TextWrapping="Wrap" Text="" Width="50"/>
-                    </StackPanel>
-                    <StackPanel HorizontalAlignment="Left" Orientation="Horizontal" VerticalAlignment="Top" Margin="35,91,0,0">
-                        <Label x:Name="label10" Content="m: "/>
-                        <TextBox x:Name="mVal" Height="25" TextWrapping="Wrap" Text="" Width="50"/>
-                    </StackPanel>
-                    <StackPanel HorizontalAlignment="Left" Orientation="Horizontal" VerticalAlignment="Top" Margin="137,91,0,0">
-                        <Label x:Name="label11" Content="c: "/>
-                        <TextBox x:Name="cVal" Height="25" TextWrapping="Wrap" Text="" Width="50"/>
-                    </StackPanel>
+                        <WrapPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <WrapPanel Orientation="Vertical">
+                                
+                            <WrapPanel HorizontalAlignment="Left" Orientation="Horizontal" Margin="5">
+                                <Label x:Name="label8" Content="Погрешность: "/>
+                                <TextBox x:Name="faultVal" Height="25" TextWrapping="Wrap" Text="" Width="50"/>
+                            </WrapPanel>
 
-                    <oxy:PlotView x:Name="PlotView" Grid.Row="0" Grid.Column="0"  Model="{Binding GraphModel}" Margin="362,60,45,49"/>
+                            <WrapPanel HorizontalAlignment="Left" Orientation="Horizontal" Margin="5">
+                                <Label x:Name="label9" Content="Степень: "/>
+                                <TextBox x:Name="sqrtVal" Height="25" TextWrapping="Wrap" Text="" Width="50"/>
+                            </WrapPanel>
 
-                    <Button x:Name="button1" Content="Рассчитать" HorizontalAlignment="Left" Margin="73,323,0,0" VerticalAlignment="Top" Click="button1_Click"/>
-                    <TextBlock x:Name="sqrtLiniar" HorizontalAlignment="Left" Margin="35,134,0,0" TextWrapping="Wrap" VerticalAlignment="Top">
+                            <WrapPanel HorizontalAlignment="Left" Orientation="Horizontal" Margin="5">
+                                <Label x:Name="label10" Content="m: "/>
+                                <TextBox x:Name="mVal" Height="25" TextWrapping="Wrap" Text="" Width="50"/>
+                            </WrapPanel>
+
+                            <WrapPanel HorizontalAlignment="Left" Orientation="Horizontal" Margin="5">
+                                <Label x:Name="label11" Content="c: "/>
+                                <TextBox x:Name="cVal" Height="25" TextWrapping="Wrap" Text="" Width="50"/>
+                            </WrapPanel>
+                          </WrapPanel>
+                            <oxy:PlotView x:Name="PlotView" MinWidth="400" MinHeight="300"  Model="{Binding GraphModel}" Margin="5"/>
+                            <TextBlock x:Name="sqrtLiniar" HorizontalAlignment="Left" Margin="5" TextWrapping="Wrap" MinHeight="200" MaxWidth="200">
                            x примерно равно:
-                    </TextBlock>
+                            </TextBlock>
+                        </WrapPanel>
+                        <Button x:Name="button1" Content="Рассчитать" HorizontalAlignment="Center" Margin="5" Click="button1_Click"/>
+
+                    </StackPanel>
                 </Grid>
             </TabItem>
             
@@ -107,14 +119,14 @@
 
                     <StackPanel Grid.Column="1" x:Name="slauFault" HorizontalAlignment="Center">
                         <TextBlock x:Name="text2" TextWrapping="Wrap" TextAlignment="Center"><Run Text="Решение СЛАУ с точностью"/></TextBlock>
-                        <StackPanel Orientation="Horizontal">
+                        <WrapPanel Orientation="Horizontal">
                             <TextBlock x:Name="znach" TextAlignment="Center"><Run Text="Точность:"/></TextBlock>
                             <TextBox x:Name="slauFF" Width="50"/>
-                        </StackPanel>
-                        <StackPanel Orientation="Horizontal">
+                        </WrapPanel>
+                        <WrapPanel Orientation="Horizontal">
                             <TextBlock x:Name="verText" TextAlignment="Center"><Run Text="m:"/></TextBlock>
                             <TextBox x:Name="ver" Width="50"/>
-                        </StackPanel>
+                        </WrapPanel>
                         <StackPanel Orientation="Vertical">
                             <TextBlock>Начальные значения</TextBlock>
                             <Grid x:Name="preVal">
@@ -157,26 +169,36 @@
             </TabItem>
             <TabItem Header="Численное решение СНУ">
                 <Grid Background="#FFE5E5E5">
-                    <TextBlock HorizontalAlignment="Center">Решение системы нелинейных уравнений методом Ньютона</TextBlock>
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="50,40,0,0">
-                        <Label>Точность:</Label>
-                        <TextBox x:Name="SnuFault" Width="30" Height="20"/>
+                    <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
+
+                        <TextBlock HorizontalAlignment="Center">Решение системы нелинейных уравнений методом Ньютона</TextBlock>
+                        <WrapPanel Orientation="Horizontal">
+                            <StackPanel Orientation="Vertical">
+                                <WrapPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="5">
+                                    <Label>Точность:</Label>
+                                    <TextBox x:Name="SnuFault" Width="30" Height="20"/>
+                                </WrapPanel>
+
+                                <StackPanel Height="30" Orientation="Horizontal" Margin="5">
+                                    <Label>sin(x -</Label>
+                                    <TextBox x:Name="SnuM" Height="20" Width="20"/>
+                                    <Label>) =</Label>
+                                    <TextBox x:Name="SnuN" Height="20" Width="20"/>
+                                    <Label>+ y</Label>
+                                </StackPanel>
+
+                                <StackPanel Height="30" Orientation="Horizontal" Margin="5">
+                                    <Label>x + sin(y +</Label>
+                                    <TextBox x:Name="SnuM1" Height="20" Width="20"/>
+                                    <Label>) =</Label>
+                                    <TextBox x:Name="SnuN1" Height="20" Width="20"/>
+                                </StackPanel>
+                            </StackPanel>
+                            <TextBlock x:Name="SnuResText" HorizontalAlignment="Left" Margin="5" MinHeight="150" MinWidth="100"/>
+                        </WrapPanel>
+                        <Button HorizontalAlignment="Left" x:Name="SnuRes" Width="100" Height="30" Margin="20" Click="SnuRes_Click">Решить</Button>
+                        
                     </StackPanel>
-                    <StackPanel Width="300" Height="30" Orientation="Horizontal" VerticalAlignment="Top" Margin="30">
-                        <Label>sin(x -</Label>
-                        <TextBox x:Name="SnuM" Height="20" Width="20"/>
-                        <Label>) =</Label>
-                        <TextBox x:Name="SnuN" Height="20" Width="20"/>
-                        <Label>+ y</Label>
-                    </StackPanel>
-                    <StackPanel Width="300" Orientation="Horizontal" VerticalAlignment="Top" Margin="30, 60, 0,0">
-                        <Label>x + sin(y +</Label>
-                        <TextBox x:Name="SnuM1" Height="20" Width="20"/>
-                        <Label>) =</Label>
-                        <TextBox x:Name="SnuN1" Height="20" Width="20"/>
-                    </StackPanel>
-                    <Button HorizontalAlignment="Left" VerticalAlignment="Bottom" x:Name="SnuRes" Width="100" Height="30" Margin="20" Click="SnuRes_Click">Решить</Button>
-                    <TextBlock x:Name="SnuResText" HorizontalAlignment="Left" Margin="32,110,0,0" VerticalAlignment="Top"/>
                 </Grid>
             </TabItem>
             <TabItem Header="Интерполяция">
@@ -191,21 +213,21 @@
                         <TextBlock TextWrapping="Wrap">Построение интерполяционного полинома Ньютона</TextBlock>
                         <StackPanel Height="100" Width="70" x:Name="InterInput"/>
                         <TextBlock x:Name="interResT" Height="80"/>
-                        <oxy:PlotView x:Name="InterGraph" Height="100" Width="200"  Model="{Binding InterGr}"/>
+                        <oxy:PlotView x:Name="InterGraph" MinHeight="100" MinWidth="200"  Model="{Binding InterGr}"/>
                         <Button x:Name="InterRes" Click="InterRes_Click" Content="Решить"/>
                     </StackPanel>
                     <StackPanel x:Name="InterSq" Grid.Column="1" HorizontalAlignment="Center">
                         <TextBlock TextWrapping="Wrap">Интерполяция кубическими сплайнами при x=1,1</TextBlock>
                         <StackPanel Height="150" Width="70" x:Name="InterSqInput"/>
-                        <TextBlock x:Name="InterSqResT" Height="50"/>
-                        <oxy:PlotView x:Name="InterSqGraph" Height="100" Width="200"  Model="{Binding InterSqGr}"/>
+                        <TextBlock x:Name="InterSqResT" Height="30"/>
+                        <oxy:PlotView x:Name="InterSqGraph" MinHeight="100" MinWidth="200"  Model="{Binding InterSqGr}"/>
                         <Button x:Name="InterSqRes" Click="InterSqRes_Click">Решить</Button>
                     </StackPanel>
                     <StackPanel x:Name="LessSq" Grid.Column="2" HorizontalAlignment="Center">
                         <TextBlock TextWrapping="Wrap">Метод наименьших квадратов</TextBlock>
-                        <StackPanel Height="130" Width="70" x:Name="LessSqInput"/>
-                        <TextBlock x:Name="LessSqResT" Height="100"/>
-                        <oxy:PlotView x:Name="LessSqGraph" Height="100" Width="200"  Model="{Binding LessSqGr}"/>
+                        <StackPanel Height="120" Width="70" x:Name="LessSqInput"/>
+                        <TextBlock x:Name="LessSqResT" Height="80"/>
+                        <oxy:PlotView x:Name="LessSqGraph" MinHeight="100" MinWidth="200"  Model="{Binding LessSqGr}"/>
                         <Button x:Name="LessSqRes" Click="LessSqRes_Click">Решить</Button>
                     </StackPanel>
 
@@ -213,41 +235,45 @@
             </TabItem>
             <TabItem Header="Численное интегрирование">
                 <Grid Background="#FFE5E5E5">
-                    <StackPanel x:Name="NumInteg">
-                        <TextBlock TextAlignment="Center" Width="600" TextWrapping="Wrap">Вычислить интеграл, используя квадратурные формулы прямо
+                    <StackPanel x:Name="NumInteg" HorizontalAlignment="Center">
+                        <TextBlock TextAlignment="Center" MaxWidth="600" TextWrapping="Wrap">Вычислить интеграл, используя квадратурные формулы прямо
 угольников, трапеций и парабол (Симпсона), при заданном числе интерва
 лов n:</TextBlock>
-                        <StackPanel Orientation="Vertical">
+                        <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
                             <TextBlock>
                                 ∫(m*x^c - m1 + √x)dx
                             </TextBlock>
                         </StackPanel>
 
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock>n =</TextBlock>
-                            <TextBox x:Name="NumInterN" Width="30"/>
-                        </StackPanel>
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock>a =</TextBlock>
-                            <TextBox x:Name="NumInterA" Width="30"/>
-                        </StackPanel>
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock>b =</TextBlock>
-                            <TextBox x:Name="NumInterB" Width="30"/>
-                        </StackPanel>
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock>c =</TextBlock>
-                            <TextBox x:Name="NumInterC" Width="30"/>
-                        </StackPanel>
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock>m =</TextBlock>
-                            <TextBox x:Name="NumInterM" Width="30"/>
-                        </StackPanel>
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock>m1 =</TextBlock>
-                            <TextBox x:Name="NumInterM1" Width="30"/>
-                        </StackPanel>
-                        <TextBlock x:Name="NumInterResT"/>
+                        <WrapPanel MaxWidth="350">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock>n =</TextBlock>
+                                <TextBox x:Name="NumInterN" Width="30"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock>a =</TextBlock>
+                                <TextBox x:Name="NumInterA" Width="30"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock>b =</TextBlock>
+                                <TextBox x:Name="NumInterB" Width="30"/>
+                            </StackPanel>
+                            
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock>m =</TextBlock>
+                                <TextBox x:Name="NumInterM" Width="30"/>
+                            </StackPanel>
+                            
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock>c =</TextBlock>
+                                <TextBox x:Name="NumInterC" Width="30"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock>m1 =</TextBlock>
+                                <TextBox x:Name="NumInterM1" Width="30"/>
+                            </StackPanel>
+                            <TextBlock x:Name="NumInterResT" MinWidth="150"/>
+                        </WrapPanel>
                         <Button x:Name="NumInterButton" Width="100" Click="NumInterButton_Click">Решить</Button>
                     </StackPanel>
                 </Grid>
@@ -287,15 +313,15 @@
                             </StackPanel>
 
                             <StackPanel Orientation="Vertical">
-                                <StackPanel Orientation="Horizontal">
+                                <StackPanel Orientation="Horizontal" Margin="5">
                                     <TextBlock MinWidth="80" Padding="5" x:Name="EulerResT"/>
                                     <oxy:PlotView x:Name="EulerGraph" Height="100" Width="150"  Model="{Binding EulerGr}"/>
                                 </StackPanel>
-                                <StackPanel Orientation="Horizontal">
+                                <StackPanel Orientation="Horizontal" Margin="5">
                                     <TextBlock MinWidth="80" Padding="5" x:Name="MEulerResT"/>
                                     <oxy:PlotView x:Name="MEulerGraph" Height="100" Width="150"  Model="{Binding MEulerGr}"/>
                                 </StackPanel>
-                                <StackPanel Orientation="Horizontal">
+                                <StackPanel Orientation="Horizontal" Margin="5">
                                     <TextBlock MinWidth="80" Padding="5" x:Name="RKutResT"/>
                                     <oxy:PlotView x:Name="RKutGraph" Height="100" Width="150"  Model="{Binding RKutGr}"/>
                                 </StackPanel>

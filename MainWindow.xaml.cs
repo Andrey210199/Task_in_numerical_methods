@@ -134,17 +134,21 @@ namespace Task_in_numerical_methods
                     }
                     break;
                 case "Линейное программирование":
-                    double[,] a = { { 1, 2 }, {-5,3}, {4,6} };
-                    double[,] b = { {14}, {15}, {24} };
-                    generate.inputGenerate(2, 3, LinearProgA, a, ["A", ""]);
-                    for(int i = 0; i<3; i++)
+                    if (LinearProgA.Children.Count == 0)
                     {
-                        TextBlock text = new TextBlock();
-                        text.Text = "<=";
-                        text.Margin = new Thickness(-10, 12,0,0);
-                        LinearProgO.Children.Add(text);
+
+                        double[,] a = { { 1, 2 }, { -5, 3 }, { 4, 6 } };
+                        double[,] b = { { 14 }, { 15 }, { 24 } };
+                        generate.inputGenerate(2, 3, LinearProgA, a, ["A", ""]);
+                        for (int i = 0; i < 3; i++)
+                        {
+                            TextBlock text = new TextBlock();
+                            text.Text = "<=";
+                            text.Margin = new Thickness(-10, 12, 0, 0);
+                            LinearProgO.Children.Add(text);
+                        }
+                        generate.inputGenerate(1, 3, LinearProgB, b, ["", "B"]);
                     }
-                    generate.inputGenerate(1, 3, LinearProgB, b, ["", "B"]);
                     break;
             }
 
@@ -175,6 +179,7 @@ namespace Task_in_numerical_methods
        
         private void button1_Click(object sender, RoutedEventArgs e)
         {
+            sqrtLiniar.Text = "x примерно равно:";
             var noonLinear = new NonlinearEquation();
 
             double n = double.Parse(sqrtVal.Text);
@@ -193,7 +198,6 @@ namespace Task_in_numerical_methods
             double[,] matrix = input.fillMatrix(slauInput, 4, 5);
             Slau slau= new Slau();
             var res = slau.calc(matrix, 4);
-
             output.outputMatrixX(slauInput, res);
         }
 
