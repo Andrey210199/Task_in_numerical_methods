@@ -8,13 +8,15 @@ using System.Windows;
 
 namespace GenerateElements
 {
+    using InputData;
     class GenerateElements
     {
+        InputData inputData = new InputData();
         public void inputGenerate(int row, int collumn, StackPanel name, double[,] d, string[] headName)
         {
             int y = -45;
             int x = -row * 24;
-
+            
             TextBlock a = new TextBlock();
             TextBlock b = new TextBlock();
 
@@ -37,12 +39,18 @@ namespace GenerateElements
                     text.Height = 20;
                     text.Margin = new Thickness(x, 0, 0, y);
                     text.Text = $"{d[i, j]}";
+                    text.TextChanged += new System.Windows.Controls.TextChangedEventHandler(Generate_Textbox_Changer);
                     name.Children.Add(text);
                     x += 65;
                 }
                 y -= 45;
                 x = -row * 24;
             }
+        }
+
+        private void Generate_Textbox_Changer(object sender, EventArgs e)
+        {
+            inputData.validation((TextBox)sender);
         }
     }
 }

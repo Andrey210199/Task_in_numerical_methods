@@ -42,6 +42,7 @@ namespace Task_in_numerical_methods
     /// </summary>
     public partial class MainWindow : Window
     {
+        InputData inputData = new InputData();
         public required PlotModel GraphModel { get; set; }
         public required PlotModel InterGr { get; set; }
         public required PlotModel InterSqGr { get; set; }
@@ -55,7 +56,7 @@ namespace Task_in_numerical_methods
         {
             InitializeComponent();
             response.Text = "";
-        }
+        }       
 
         GenerateElements generate = new GenerateElements();
         InputData input = new InputData();
@@ -91,30 +92,23 @@ namespace Task_in_numerical_methods
                     if (slauInput.Children.Count == 0)
                     {
                         double[,] d = { { 3, 2, 1, 1, 1 }, { 3, 3, 2, 2, -1 }, { 3, 3, 3, 4, -4 }, { 3, 3, 3, 5, -5 } };
-                        double[,] f = { { 3, 1, -1, 1, 0 }, { 1, -4, 1, -1, 0 }, { -1, 1, 4, 1, 0 }, { 1, 2, 1, -5, 0 } };
+                        double[,] f = { { 3, 1, -1, 1 }, { 1, -4, 1, -1 }, { -1, 1, 4, 1 }, { 1, 2, 1, -5 } };
                         double[,] r = { { -7, 2, 0, 0, -5 }, { 1, -12, -4, 0, -8 }, { 0, -1, 6, -1, -2 }, { 0, 0, 3, 5, 4 } };
                         string[] headNames = { "A", "B" };
-                        string[] bValue = { "3m", "m-6", "15-m", "m+2"};
+                        string[] bValue = {"B", "3m", "m-6", "15-m", "m+2"};
                         generate.inputGenerate(5, 4, slauInput, d, headNames);
-                        generate.inputGenerate(5, 4, slauFaultInput, f, headNames);
+                        generate.inputGenerate(4, 4, slauFaultInput, f, ["A", ""]);
                         generate.inputGenerate(5, 4, slauRunInput, r, headNames);
 
-                        foreach (var item in slauFaultInput.Children)
+                        int y = -200;
+                        for (int i=0; i < bValue.Length; i++ )
                         {
-                            if (item is TextBox)
-                            {
-                                TextBox n = (TextBox)item;
-
-                                if (n.Name.LastIndexOf('4') == n.Name.Length - 1)
-                                {
-                                    int i = n.Name[n.Name.Length - 3] -'0';
-                                    n.Text = bValue[i];
-                                    n.IsEnabled = false;
-                                    n.Width = 40;
-                                }
-
-                            }
-
+                           TextBlock newBlock = new TextBlock();
+                           newBlock.Text = bValue[i];
+                           newBlock.Width = 50;
+                           newBlock.Margin = new Thickness(185,y,0,0);
+                           slauFaultI.Children.Add(newBlock);
+                            y += 21;
                         }
 
                     }
@@ -154,194 +148,237 @@ namespace Task_in_numerical_methods
 
         }
 
-        private void button_Click(object sender, RoutedEventArgs e)
+        private void erEstimateBut_Click(object sender, RoutedEventArgs e)
         {
             response.Text = "";
-
-            string[] fName= [ "F", "Fmax", "Fmin", "Абсолютная погрешность", "Относительная погрешность" ];
-
-            double x = double.Parse(xValue.Text);
-            double y = - double.Parse(yValue.Text);
-            double xF = double.Parse(xFault.Text);
-            double yF = double.Parse(yFault.Text);
-            double m = double.Parse(mValue.Text);
-            double k = double.Parse(kValue.Text);
-
-            ZnachFunk znach = new ZnachFunk(x, y, xF, yF, m, k);
-            Dictionary<string, double> resp = znach.Caclulate();
-
-            foreach (var item in resp)
+            string[] variableName = { "x", "xF", "y", "yF", "m", "k"};
+            var variables = inputData.fillVariable(sender, variableName);
+            
+            if(variables.isEnable)
             {
-                response.Text += $"{item.Key}: {item.Value}\n";
-            }
+                string[] fName = ["F", "Fmax", "Fmin", "Абсолютная погрешность", "Относительная погрешность"];
+                variables.variables["y"] = - variables.variables["y"];
+                ZnachFunk znach = new ZnachFunk(variables.variables);
+                Dictionary<string, double> resp = znach.Caclulate();
+
+                foreach (var item in resp)
+                {
+                    response.Text += $"{item.Key}: {item.Value}\n";
+                }
+            }    
 
         }
        
         private void button1_Click(object sender, RoutedEventArgs e)
         {
-            sqrtLiniar.Text = "x примерно равно:";
-            var noonLinear = new NonlinearEquation();
+            string[] variableName = { "fault", "n", "m", "c" };
+            var variables = inputData.fillVariable(sender, variableName);
 
-            double n = double.Parse(sqrtVal.Text);
-            double m = double.Parse(mVal.Text);
-            double c = double.Parse(cVal.Text);
-            double fault = double.Parse(faultVal.Text);
+            if (variables.isEnable)
+            {
 
-            var points = noonLinear.calculate(n,m,c, fault);
-            sqrtLiniar.Text += $" {points["x"].Last()}";
-            GraphModel = CreatePlotModel(points);
-            DataContext = this;
+                sqrtLiniar.Text = "x примерно равно:";
+                var noonLinear = new NonlinearEquation();
+
+                var points = noonLinear.calculate(variables.variables["n"], variables.variables["m"], variables.variables["c"], variables.variables["fault"]);
+                sqrtLiniar.Text += $" {points["x"].Last()}";
+                GraphModel = CreatePlotModel(points);
+                DataContext = this;
+            }
         }
 
         private void button2_Click(object sender, RoutedEventArgs e)
         {
-            double[,] matrix = input.fillMatrix(slauInput, 4, 5);
-            Slau slau= new Slau();
-            var res = slau.calc(matrix, 4);
-            output.outputMatrixX(slauInput, res);
+            Button but = (Button)sender;
+            bool isEnable = inputData.isButtonBlock((StackPanel)but.Parent,but);
+            if (isEnable)
+            {
+                double[,] matrix = input.fillMatrix(slauInput, 4, 5);
+                Slau slau = new Slau();
+                var res = slau.calc(matrix, 4);
+                output.outputMatrixX(slauInput, res);
+            }
+            
         }
 
         private void slauFaultRes_Click(object sender, RoutedEventArgs e)
         {
-            double[,] matrix = input.fillMatrix(slauFaultInput, 4, 5);
-            double m = double.Parse(ver.Text);
-            double fault = double.Parse(slauFF.Text);
-            double x1 = double.Parse(slauFX1.Text)*m;
-            double x2 = double.Parse(slauFX2.Text);
-            double x3 = double.Parse(slauFX3.Text);
-            double x4 = double.Parse(slauFX4.Text);
+            Button but = (Button)sender;
+            bool isEnable = inputData.isButtonBlock((StackPanel)but.Parent, but);
+            if (isEnable)
+            {
+                double[,] matrix = input.fillMatrix(slauFaultInput, 4, 5);
+                double m = double.Parse(ver.inputText.Text);
+                double fault = double.Parse(slauFF.inputText.Text);
+                double x1 = double.Parse(slauFX1.Text) * m;
+                double x2 = double.Parse(slauFX2.Text);
+                double x3 = double.Parse(slauFX3.Text);
+                double x4 = double.Parse(slauFX4.Text);
 
-            matrix[0, 4] = 3 * m;
-            matrix[1,4] = m-6;
-            matrix[2,4] = 15-m;
-            matrix[3,4] = m+2;
+                matrix[0, 4] = 3 * m;
+                matrix[1, 4] = m - 6;
+                matrix[2, 4] = 15 - m;
+                matrix[3, 4] = m + 2;
 
-            SlauIteration slauI = new SlauIteration(matrix, fault, x1, x2, x3, x4);
+                SlauIteration slauI = new SlauIteration(matrix, fault, x1, x2, x3, x4);
 
-            var res = slauI.calc();
-            output.outputMatrixX(slauFaultInput, res);
+                var res = slauI.calc();
+                output.outputMatrixX(slauFaultInput, res);
+            }
         }
 
         private void slauRunRes_Click(object sender, RoutedEventArgs e)
         {
-            
-            double[,] matrix = input.fillMatrix(slauRunInput, 4, 5);
-            SlauRun slau = new SlauRun();
+            Button but = (Button)sender;
+            bool isEnable = inputData.isButtonBlock((StackPanel)but.Parent, but);
+            if (isEnable)
+            {
+                double[,] matrix = input.fillMatrix(slauRunInput, 4, 5);
+                SlauRun slau = new SlauRun();
 
-            var res = slau.calc(matrix);
-            output.outputMatrixX(slauRunInput, res);
+                var res = slau.calc(matrix);
+                output.outputMatrixX(slauRunInput, res);
+            }
             
         }
 
         private void SnuRes_Click(object sender, RoutedEventArgs e)
         {
-            double fault = double.Parse(SnuFault.Text);
-            Dictionary<string, double> item = new Dictionary<string, double>();
-            item.Add("m",double.Parse(SnuM.Text));
-            item.Add("m1", double.Parse(SnuM1.Text));
-            item.Add("n", double.Parse(SnuN.Text));
-            item.Add("n1", double.Parse(SnuN1.Text));
-            SNU sNU = new SNU();
-            Dictionary<string, double> res = sNU.calc(fault, item);
-            output.outputDictionary(res, SnuResText);
+            string[] variableName = { "fault", "m", "n", "m1", "n1" };
+            var variables = inputData.fillVariable(sender, variableName);
+
+            if (variables.isEnable)
+            {
+                SNU sNU = new SNU();
+                Dictionary<string, double> res = sNU.calc(variables.variables);
+                output.outputDictionary(res, SnuResText);
+            }
 
         }
 
         private void InterRes_Click(object sender, RoutedEventArgs e)
         {
-            double[,] matrix = input.fillMatrix(InterInput, 4, 2);
-            Polinom pol = new Polinom(matrix);
-            Dictionary<string, List<double>> res = pol.calc();
-            output.outputXY(interResT, res);
-            InterGr = CreatePlotModel(res);
-            DataContext = this;
+            Button but = (Button)sender;
+            bool isEnable = inputData.isButtonBlock((StackPanel)but.Parent, but);
+            if (isEnable)
+            {
+                double[,] matrix = input.fillMatrix(InterInput, 4, 2);
+                Polinom pol = new Polinom(matrix);
+                Dictionary<string, List<double>> res = pol.calc();
+                output.outputXY(interResT, res);
+                InterGr = CreatePlotModel(res);
+                DataContext = this;
+            }
         }
 
         private void InterSqRes_Click(object sender, RoutedEventArgs e)
         {
-            double[,] matrix = input.fillMatrix(InterSqInput, 6, 2);
-            double foundX = 1.1;
-            InterSqr interSqr = new InterSqr(matrix,foundX);
-            Dictionary<string, List<double>> res = interSqr.calc();
-            InterSqResT.Text = $"При x {res["x"][1]}, y равно {res["y"][1]}";
-            InterSqGr = CreatePlotModel(res);
-            DataContext = this;
+            Button but = (Button)sender;
+            bool isEnable = inputData.isButtonBlock((StackPanel)but.Parent, but);
+            if (isEnable)
+            {
+                double[,] matrix = input.fillMatrix(InterSqInput, 6, 2);
+                double foundX = 1.1;
+                InterSqr interSqr = new InterSqr(matrix, foundX);
+                Dictionary<string, List<double>> res = interSqr.calc();
+                InterSqResT.Text = $"При x {res["x"][1]}, y равно {res["y"][1]}";
+                InterSqGr = CreatePlotModel(res);
+                DataContext = this;
+            }
         }
 
         private void LessSqRes_Click(object sender, RoutedEventArgs e)
         {
-            double[,] matrix = input.fillMatrix(LessSqInput, 4, 2);
-            LessSqruare less = new LessSqruare();
-            Dictionary<string, List<double>> res = less.calc(matrix);
+            Button but = (Button)sender;
+            bool isEnable = inputData.isButtonBlock((StackPanel)but.Parent, but);
+            if (isEnable)
+            {
+                double[,] matrix = input.fillMatrix(LessSqInput, 4, 2);
+                LessSqruare less = new LessSqruare();
+                Dictionary<string, List<double>> res = less.calc(matrix);
 
-            output.outputXY(LessSqResT, res);
-            LessSqGr = CreatePlotModel(res);
-            DataContext = this;
+                output.outputXY(LessSqResT, res);
+                LessSqGr = CreatePlotModel(res);
+                DataContext = this;
+            }
         }
 
         private void NumInterButton_Click(object sender, RoutedEventArgs e)
-        {
-            int n = int.Parse(NumInterN.Text);
-            double c = double.Parse(NumInterC.Text);
-            double a = double.Parse(NumInterA.Text);
-            double b = double.Parse(NumInterB.Text);
-            double m = double.Parse(NumInterM.Text);
-            double m1 = double.Parse(NumInterM1.Text);
-            double[] abcmm1 = { a, b, c, m, m1 };
+        {      
+            string[] variableName = { "n", "a", "b", "m", "c", "m1" };
+            var variables = inputData.fillVariable(sender, variableName);
 
-            NumIntegration numIntegration = new NumIntegration();
-            Dictionary<string, double> res = numIntegration.calc(n, abcmm1);
-            output.outputDictionary(res, NumInterResT);
+            if (variables.isEnable)
+            {
+                NumIntegration numIntegration = new NumIntegration();
+                Dictionary<string, double> res = numIntegration.calc(variables.variables);
+                output.outputDictionary(res, NumInterResT);
+            }
         }
 
         private void FDifferentBRes_Click(object sender, RoutedEventArgs e)
         {
-            double m = double.Parse(FDifferentM.Text);
-            double c = double.Parse(FDifferentC.Text);
-            double xs = double.Parse(FDifferentXS.Text);
-            double xe = double.Parse(FDifferentXE.Text);
-            double y = double.Parse(FDifferentYS.Text);
-            double h = double.Parse(FDifferentH.Text);
 
-            FiniteDiffMethod method = new FiniteDiffMethod(h, [xs,xe], y, [m,c]);
-            var euler = method.calcEuler();
-            var mEuler = method.calcModEuler();
-            var rKut = method.calcRungeKut();
-            output.outputXY(EulerResT, euler);
-            output.outputXY(MEulerResT, mEuler);
-            output.outputXY(RKutResT, rKut);
+            string[] variableName = { "m", "c", "xs", "xe", "y", "h" };
+            var variables = inputData.fillVariable(sender, variableName);
 
-            EulerGr = CreatePlotModel(euler);
-            MEulerGr = CreatePlotModel(mEuler);
-            RKutGr = CreatePlotModel(rKut);
+            if (variables.isEnable)
+            {
 
-            DataContext = this;
+                FiniteDiffMethod method = new FiniteDiffMethod(variables.variables);
+                var euler = method.calcEuler();
+                var mEuler = method.calcModEuler();
+                var rKut = method.calcRungeKut();
+                output.outputXY(EulerResT, euler);
+                output.outputXY(MEulerResT, mEuler);
+                output.outputXY(RKutResT, rKut);
+
+                EulerGr = CreatePlotModel(euler);
+                MEulerGr = CreatePlotModel(mEuler);
+                RKutGr = CreatePlotModel(rKut);
+
+                DataContext = this;
+            }
         }
 
         private void SecondTimeResB_Click(object sender, RoutedEventArgs e)
         {
-            double m = double.Parse(SecondTimeM.Text);
-            double c = double.Parse(SecondTimeC.Text);
-            double x = double.Parse(SecondTimeX.Text);
-            double y = double.Parse (SecondTimeY.Text);
-            double x1 = double.Parse(SecondTimeX1.Text);
-            double y1 = double.Parse(SecondTimeY1.Text);
-            double h = double.Parse(SecondTimeH.Text);
 
-            FiniteDifferent finite = new FiniteDifferent();
-            double[,] xyArr = x>x1? new double[,] { { x,y }, { x1, y1 } } : new double[,] { { x1,y1 }, { x, y } };
-            var res = finite.calc([m,c], xyArr, h);
-            output.outputXY(SecondTimeResT, res);
+            string[] variableName = { "m", "c","x", "y", "x1", "y1", "h" };
+            var variables = inputData.fillVariable(sender, variableName);
+
+            if (variables.isEnable)
+            {
+                double x = variables.variables["x"];
+                double y = variables.variables["y"];
+                double x1 = variables.variables["x1"];
+                double y1 = variables.variables["y1"];
+                FiniteDifferent finite = new FiniteDifferent();
+                double[,] xyArr = x > x1 ? new double[,] { { x, y }, { x1, y1 } } : new double[,] { { x1, y1 }, { x, y } };
+                var res = finite.calc([variables.variables["m"], variables.variables["c"]], xyArr, variables.variables["h"]);
+                output.outputXY(SecondTimeResT, res);
+            }
         }
 
         private void LinearProgResB_Click(object sender, RoutedEventArgs e)
         {
-            var a = input.fillMatrix(LinearProgA, 3, 2);
-            var b = input.fillMatrix(LinearProgB, 3, 1);
-            double[] fXIndex = [1, 2];
-            LinearProgramming lin = new LinearProgramming();
-            var res = lin.calc(a, b, fXIndex);
-            output.outputDictionary(res, LinearProgResT);
+            Button but = (Button)sender;
+            bool isEnable = inputData.isButtonBlock((StackPanel)but.Parent, but);
+            if (isEnable)
+            {
+                var a = input.fillMatrix(LinearProgA, 3, 2);
+                var b = input.fillMatrix(LinearProgB, 3, 1);
+                double[] fXIndex = [1, 2];
+                LinearProgramming lin = new LinearProgramming();
+                var res = lin.calc(a, b, fXIndex);
+                output.outputDictionary(res, LinearProgResT);
+            }
         }
+
+        private void slauFX_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            inputData.validation((TextBox)sender);
+        }
+
     }
 }

@@ -91,9 +91,12 @@ namespace NumIntegration
             return h/3 * summ;
         }
 
-        public Dictionary<string, double> calc(int n, double[] abcmm1)
+        public Dictionary<string, double> calc(Dictionary<string,double> variables)
         {
             Dictionary<string, double> res = new Dictionary<string, double>();
+            double[] abcmm1 = [ variables["a"], variables["b"], variables["c"], variables["m"], variables["m1"] ];
+            int n =(int) variables["n"];
+
             double h = calcH(n, abcmm1);
             var xFx = calcXFX(n, abcmm1, h);
             double leftRect = leftRightRect(xFx, h, n);

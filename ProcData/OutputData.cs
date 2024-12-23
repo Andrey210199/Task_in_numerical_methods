@@ -44,5 +44,6 @@ namespace OutputData
                 name.Text += $"{it.Key}: {it.Value}\n";
             }
         }
+
     }
 }

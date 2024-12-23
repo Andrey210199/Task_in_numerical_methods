@@ -8,7 +8,7 @@ namespace SNU
 {
     class SNU
     {
-        private Dictionary<string,double> compute(double fault, Dictionary<string, double> item)
+        private Dictionary<string,double> compute(Dictionary<string, double> item)
         {
             Dictionary<string, double> res = new Dictionary<string, double>();
             int i = 0;
@@ -39,7 +39,7 @@ namespace SNU
                 x = newX;
                 y = newY;
 
-                if(curFault <= fault)
+                if(curFault <= item["fault"])
                 {
                     break;
                 }
@@ -55,9 +55,9 @@ namespace SNU
             return res;
         }
 
-        public Dictionary<string, double> calc(double fault, Dictionary<string, double> item)
+        public Dictionary<string, double> calc(Dictionary<string, double> item)
         {
-            return compute(fault, item);
+            return compute(item);
         }
     }
 }

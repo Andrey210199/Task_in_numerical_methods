@@ -1,0 +1,15 @@
+﻿<UserControl x:Class="Task_in_numerical_methods.UIElements.UIInputVariable"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Task_in_numerical_methods.UIElements"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    
+    <WrapPanel HorizontalAlignment="Left" Orientation="Horizontal" Margin="{Binding wMargin}">
+        <TextBlock x:Name="text" TextWrapping="Wrap" Padding="0,0,5,0" Text="{Binding tText}"/>
+        <TextBox x:Name="inputText" TextWrapping="Wrap" Text="" Width="{Binding bWidth}" TextChanged="inputText_TextChanged"/>
+    </WrapPanel>
+    
+</UserControl>

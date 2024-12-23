@@ -13,17 +13,17 @@ namespace ZnachFunk
         Dictionary<string, double> param = new Dictionary<string, double>();
 
 
-        public ZnachFunk(double x, double y, double xF, double yF, double m, double k)
+        public ZnachFunk(Dictionary<string,double> variable)
         {
 
-            param["x"] = x;
-            param["y"] = y;
-            param["xMax"] = x + xF;
-            param["xMin"] = x - xF;
-            param["yMax"] = y + (yF/100 *y);
-            param["yMin"] = y - yF/100 * y;
-            param["m"] = m;
-            param["k"] = k;
+            param["x"] = variable["x"];
+            param["y"] = variable["y"];
+            param["xMax"] = variable["x"] + variable["xF"];
+            param["xMin"] = variable["x"] - variable["xF"];
+            param["yMax"] = variable["y"] + (variable["yF"]/100 *variable["y"]);
+            param["yMin"] = variable["y"] - variable["yF"]/100 * variable["y"];
+            param["m"] = variable["m"];
+            param["k"] = variable["k"];
 
         }
         

@@ -15,13 +15,13 @@ namespace FiniteDiffMethod
         double[] MC;
         double[] XARR;
 
-        public FiniteDiffMethod(double h, double[] startX, double startY, double[] mC) 
+        public FiniteDiffMethod(Dictionary<string,double> variables) 
         {
-            H = h;
-            StartX = startX;
-            StartY = startY;
-            MC = mC;
-            double n = (startX[1] - startX[0])/h;
+            H = variables["h"];
+            StartX = [variables["xs"], variables["xe"]];
+            StartY = variables["y"];
+            MC = [variables["m"], variables["c"]];
+            double n = (variables["xe"] - variables["xs"])/variables["h"];
             N = (int) n;
             XARR = calcX();
 
